@@ -50,7 +50,7 @@
     "typescript": "^5.2.2",
     "xss": "^1.0.14"
   },
-  "name": "cart-backend",
+  "name": "auth-service",
   "version": "1.0.0",
   "main": "index.ts",
   "scripts": {
@@ -60,7 +60,7 @@
     "test": "jest",
     "knex": "knex --knexfile src/database/knexfile.ts",
     "lint": "eslint src/**/*.ts",
-   "format": "prettier 'src/**/*.ts' --write"
+    "format": "prettier 'src/**/*.ts' --write"
   },
   "keywords": [],
   "author": "",
