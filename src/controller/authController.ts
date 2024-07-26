@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import AuthService from '../service/authService';
 import { loginSchema, registrationSchema } from '../validation/authValidation';
 import { parse } from 'cookie';
+import asyncHandler from '../utils/asyncHandler';
 
 class AuthController {
   private authService: AuthService;
@@ -10,7 +11,7 @@ class AuthController {
     this.authService = new AuthService();
   }
 
-  login = async (req: Request, res: Response): Promise<Response> => {
+  login = asyncHandler(async (req: Request, res: Response): Promise<Response> => {
     const userData = loginSchema.parse(req.body);
     const result = await this.authService.login(userData);
 
@@ -25,9 +26,9 @@ class AuthController {
       })
       .status(201)
       .json(result);
-  };
+  });
 
-  register = async (req: Request, res: Response): Promise<Response> => {
+  register = asyncHandler(async (req: Request, res: Response): Promise<Response> => {
     const userData = registrationSchema.parse(req.body);
     const user = await this.authService.register(userData);
 
@@ -35,9 +36,9 @@ class AuthController {
       return res.status(400).json({ error: 'User not found' });
     }
     return res.status(201).json(user);
-  };
+  });
 
-  accessToken = async (req: Request, res: Response): Promise<Response> => {
+  accessToken = asyncHandler(async (req: Request, res: Response): Promise<Response> => {
     const cookie = parse(req.headers.cookie || '');
     const refreshToken = cookie.rft;
 
@@ -51,7 +52,7 @@ class AuthController {
     }
 
     return res.status(201).json(accessToken);
-  };
+  });
 }
 
 export default AuthController;
