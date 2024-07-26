@@ -16,11 +16,11 @@ export function issueAccessAndRefreshTokens(user: User): { accessToken: string; 
     return null;
   }
   const accessToken = jwt.sign({ id }, accessSecretKey, {
-    expiresIn: '1h',
+    expiresIn: '1h'
   });
 
   const refreshToken = jwt.sign({ id }, refreshSecretKey, {
-    expiresIn: '10d',
+    expiresIn: '10d'
   });
 
   return { accessToken, refreshToken };
@@ -29,7 +29,7 @@ export function issueAccessAndRefreshTokens(user: User): { accessToken: string; 
 // issue access token with valid refresh token
 export function issueAccessToken(id: string): string {
   const accessToken = jwt.sign({ id }, process.env.ACCESS_SECRET_KEY || '', {
-    expiresIn: '1h',
+    expiresIn: '1h'
   });
   return accessToken;
 }

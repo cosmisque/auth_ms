@@ -37,7 +37,7 @@ class AuthService {
     const newToken = {
       user_id: user.id ?? 0,
       access_token: accessToken,
-      refresh_token: refreshToken,
+      refresh_token: refreshToken
     };
     await this.authRepository.update(newToken);
     return {
@@ -46,7 +46,7 @@ class AuthService {
       email: user.email,
       roleIds,
       refreshToken,
-      accessToken,
+      accessToken
     };
   }
 
@@ -57,7 +57,7 @@ class AuthService {
     const newUser = { username, email, password: hashedPassword };
 
     const { data: userResponse } = await axios.post(`${process.env.USER_URL}`, {
-      ...newUser,
+      ...newUser
     });
 
     const { userId } = userResponse;
@@ -67,14 +67,14 @@ class AuthService {
 
     await axios.post(`${process.env.ROLE_URL}/role`, {
       userId: userId,
-      roleIds: roleIds,
+      roleIds: roleIds
     });
 
     const user: User = {
       id: userId,
       username,
       email,
-      roleIds,
+      roleIds
     };
 
     return user;
@@ -100,7 +100,7 @@ class AuthService {
     const newToken = {
       user_id: user.id ?? 0,
       access_token: accessToken,
-      refresh_token: token,
+      refresh_token: token
     };
     await this.authRepository.update(newToken);
 

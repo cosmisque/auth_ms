@@ -22,7 +22,7 @@ class AuthController {
     return res
       .cookie('rft', refreshToken, {
         httpOnly: true,
-        sameSite: 'strict',
+        sameSite: 'strict'
       })
       .status(201)
       .json(result);
