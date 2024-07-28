@@ -38,8 +38,7 @@ class AuthController {
       res.status(400).json({ error: 'User not found' });
       return;
     }
-    res.status(201).json(user);
-    return;
+    res.status(201).json({ message: 'User successfully created!' });
   });
 
   accessToken = asyncHandler(async (req: Request, res: Response) => {
