@@ -20,7 +20,6 @@ class AuthService {
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password || '');
-
     if (!isPasswordValid) {
       return null;
     }
@@ -56,7 +55,7 @@ class AuthService {
 
     const newUser = { username, email, password: hashedPassword };
 
-    const { data: userResponse } = await axios.post(`${process.env.USER_URL}`, {
+    const { data: userResponse } = await axios.post(`${process.env.USER_URL}/create`, {
       ...newUser
     });
 
