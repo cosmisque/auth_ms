@@ -9,6 +9,6 @@ authRoute.post('/login', authController.login);
 
 authRoute.post('/register', authController.register);
 
-authRoute.get('/access_token', authController.accessToken);
+authRoute.get('/access', authController.accessToken);
 
 export default authRoute;
