@@ -59,6 +59,14 @@ class AuthController {
     res.status(201).json(accessToken);
     return;
   });
+
+  decode = asyncHandler(async (req: Request, res: Response) => {
+    const token = req.headers.authorization;
+    const decodeToken = await this.authService.decode(token);
+
+    res.status(201).json(decodeToken);
+    return;
+  });
 }
 
 export default AuthController;

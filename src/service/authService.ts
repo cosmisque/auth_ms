@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import { issueAccessAndRefreshTokens, issueAccessToken, validateToken } from '../utils/tokenIssuer';
 import AuthRepository from '../repository/authRepository';
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
 
 class AuthService {
   private authRepository: AuthRepository;
@@ -95,7 +96,10 @@ class AuthService {
     if (!refresh_token || refresh_token !== token) {
       return null;
     }
-    const accessToken = issueAccessToken(String(user.id));
+    if (!process.env.ACCESS_SECRET_KEY) {
+      return null;
+    }
+    const accessToken = issueAccessToken(process.env.ACCESS_SECRET_KEY, String(user.id));
     const newToken = {
       user_id: user.id ?? 0,
       access_token: accessToken,
@@ -107,6 +111,11 @@ class AuthService {
       return null;
     }
     return { accessToken };
+  }
+
+  async decode(token: string) {
+    const decoded = jwtDecode(token);
+    return decoded;
   }
 }
 
