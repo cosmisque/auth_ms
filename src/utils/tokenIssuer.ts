@@ -10,16 +10,12 @@ declare module 'jsonwebtoken' {
 // issue both tokens if no refresh token eg. first login
 export function issueAccessAndRefreshTokens(user: User): { accessToken: string; refreshToken: string } | null {
   const { id } = user;
-  const refreshSecretKey = process.env.REFRESH_SECRET_KEY || '';
-  const accessSecretKey = process.env.ACCESS_SECRET_KEY || '';
-  if (!refreshSecretKey || !accessSecretKey) {
+  if (!process.env.REFRESH_SECRET_KEY || !process.env.ACCESS_SECRET_KEY || !id) {
     return null;
   }
-  const accessToken = jwt.sign({ id }, accessSecretKey, {
-    expiresIn: '1h'
-  });
+  const accessToken = issueAccessToken(process.env.ACCESS_SECRET_KEY, id);
 
-  const refreshToken = jwt.sign({ id }, refreshSecretKey, {
+  const refreshToken = jwt.sign({ id }, process.env.REFRESH_SECRET_KEY, {
     expiresIn: '10d'
   });
 
@@ -27,20 +23,14 @@ export function issueAccessAndRefreshTokens(user: User): { accessToken: string; 
 }
 
 // issue access token with valid refresh token
-export function issueAccessToken(id: string): string {
-  const accessToken = jwt.sign({ id }, process.env.ACCESS_SECRET_KEY || '', {
+export function issueAccessToken(accessKey: string, id: string): string {
+  const accessToken = jwt.sign({ id }, accessKey, {
     expiresIn: '1h'
   });
   return accessToken;
 }
 
-export function validateToken(secretKey: string, token: string): string {
-  try {
-    const { id } = <jwt.UserIDJwtPayload>jwt.verify(token, secretKey);
-    console.log('verified ' + id);
-    return id;
-  } catch (error) {
-    console.log(error);
-    return '';
-  }
+export function validateToken(secretKey: string, token: string): string | undefined {
+  const { id } = <jwt.UserIDJwtPayload>jwt.verify(token, secretKey);
+  return id;
 }

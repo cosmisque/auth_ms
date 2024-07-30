@@ -15,8 +15,11 @@ export async function validateAuth(req: Request, res: Response, next: NextFuncti
     return res.status(401).json({ message: 'Authentication required' });
   }
   const token = bearerToken.substring(7);
-  const userId = validateToken(process.env.ACCESS_SECRET_KEY || '', token);
+  if (!process.env.ACCESS_SECRET_KEY) {
+    return;
+  }
 
+  const userId = validateToken(process.env.ACCESS_SECRET_KEY, token);
   if (!userId) {
     return res.status(401).json({ message: 'Invalid token' });
   }
